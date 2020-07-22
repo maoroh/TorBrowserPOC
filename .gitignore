@@ -40,3 +40,5 @@ gradle-app.setting
 .gradletasknamecache
 
 .iws
+
+out/*
