@@ -4,8 +4,10 @@ import actions.DHAction;
 import actions.DirRequestAction;
 import actions.RoutingAction;
 import dir.DirectoryResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.DHUtils;
-import router.NodeInfo;
+import node.NodeInfo;
 
 import javax.crypto.KeyAgreement;
 import java.io.*;
@@ -13,12 +15,13 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.security.KeyPair;
 import java.security.PublicKey;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Client {
+
+    private final Logger logger = LogManager.getLogger();
 
     private Map<NodeInfo, ByteBuffer> _nodeKeys;
 
@@ -31,7 +34,7 @@ public class Client {
         Socket nodeSocket = new Socket(nodeInfo.getHost(), nodeInfo.getPort());
         ObjectOutputStream nodeOutputStream = new ObjectOutputStream(nodeSocket.getOutputStream());
         ObjectInputStream nodeInputStream = new ObjectInputStream(nodeSocket.getInputStream());
-        System.out.println("Client : Generate DH keypair ...");
+        logger.info("Client : Generate DH keypair ...");
 
         KeyPair clientKeyPair = DHUtils.generateKeyPair(1024);
         KeyAgreement keyAgreement = DHUtils.createKeyAgreement(clientKeyPair);
@@ -41,12 +44,12 @@ public class Client {
         nodeOutputStream.writeObject(dhAction);
         DHAction dhActionRec = (DHAction) nodeInputStream.readObject();
 
-        System.out.println("Client : Received Public Key from router ...");
+        logger.info("Client : Received Public Key from node ...");
         PublicKey nodePublicKey = DHUtils.getPublicKeyFromEncodedBytes(dhActionRec.getPublicKey());
         keyAgreement.doPhase(nodePublicKey, true);
         ByteBuffer secretSymmetricKey = ByteBuffer.wrap(keyAgreement.generateSecret());
         nodeSocket.close();
-        System.out.println("Client Symmetric key : " + secretSymmetricKey.get(0));
+        logger.info("Client Symmetric key : " + secretSymmetricKey.get(0));
         return secretSymmetricKey;
     }
 
@@ -65,7 +68,7 @@ public class Client {
             ByteBuffer symmetricKey = replaceKey(nodeInfo);
             _nodeKeys.put(nodeInfo, symmetricKey);
         }
-        System.out.println("Finishing Replacing keys...");
+        logger.info("Finishing Replacing keys...");
     }
 
     public void sendAnonymousRequest(ClientRequest request){

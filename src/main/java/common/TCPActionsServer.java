@@ -1,5 +1,7 @@
 package common;
 import actions.Action;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,6 +13,7 @@ import java.util.concurrent.Executors;
 
 public abstract class TCPActionsServer {
 
+    private final Logger logger = LogManager.getLogger();
     protected ServerSocket _serverSocket;
     protected int _port;
 
@@ -22,7 +25,7 @@ public abstract class TCPActionsServer {
 
     public void startListening() throws IOException {
         init();
-        System.out.println("Server " + this.getClass().getSimpleName() + " start listening on port " + _port);
+        logger.info("Server " + this.getClass().getSimpleName() + " start listening on port " + _port);
         Executors.newSingleThreadExecutor().submit(new TCPListener());
     }
 
@@ -38,7 +41,7 @@ public abstract class TCPActionsServer {
 
                 try {
                     Socket clientSocket = _serverSocket.accept();
-                    System.out.println("Client connected to server ...");
+                    logger.info("Client connected to server ...");
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
                     ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
                     Action action = (Action) objectInputStream.readObject();

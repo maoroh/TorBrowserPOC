@@ -2,11 +2,10 @@ package dir;
 import actions.Action;
 import actions.ActionType;
 import actions.DirRequestAction;
+import common.Configuration;
 import common.TCPActionsServer;
-import router.Node;
-import router.NodeInfo;
-import utils.HopsParser;
-
+import node.Node;
+import node.NodeInfo;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -17,8 +16,10 @@ public class Directory extends TCPActionsServer {
 
     private List<NodeInfo> _nodes;
 
-    public Directory(int port) throws IOException {
-        super(port);
+    public Directory() throws IOException {
+        super(Configuration.getConfig()
+                .getDirectoryServerConfig()
+                .getPort());
     }
 
     @Override
@@ -27,7 +28,7 @@ public class Directory extends TCPActionsServer {
     }
 
     protected void loadingNodesAndStartAll() throws IOException {
-        List<NodeInfo> nodes = HopsParser.of("hops.json").parseNodes();
+        List<NodeInfo> nodes = Configuration.getConfig().getNodes();
         _nodes = nodes;
         for(NodeInfo nodeInfo : nodes){
             Node node = new Node(nodeInfo.getPort());

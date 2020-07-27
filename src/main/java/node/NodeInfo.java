@@ -1,4 +1,4 @@
-package router;
+package node;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -11,6 +11,9 @@ public class NodeInfo implements Serializable {
     @SerializedName("port")
     private int _port;
 
+    public NodeInfo(){
+
+    }
     public NodeInfo(String host, int port){
         _host = host;
         _port = port;

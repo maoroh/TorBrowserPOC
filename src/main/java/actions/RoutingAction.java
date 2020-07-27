@@ -1,7 +1,7 @@
 package actions;
 
 import client.ClientRequest;
-import router.NodeInfo;
+import node.NodeInfo;
 
 public class RoutingAction extends Action {
 

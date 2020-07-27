@@ -1,7 +1,6 @@
 package dir;
 
-import router.Node;
-import router.NodeInfo;
+import node.NodeInfo;
 
 import java.io.Serializable;
 import java.util.List;

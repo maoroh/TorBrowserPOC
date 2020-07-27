@@ -1,8 +1,10 @@
-package router;
+package node;
 import actions.Action;
 import actions.ActionType;
 import actions.DHAction;
 import common.TCPActionsServer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.DHUtils;
 
 import javax.crypto.KeyAgreement;
@@ -13,6 +15,7 @@ import java.security.*;
 
 public class Node extends TCPActionsServer {
 
+    private final Logger logger = LogManager.getLogger();
 
     public Node(int port) throws IOException {
         super(port);
@@ -42,7 +45,7 @@ public class Node extends TCPActionsServer {
         PublicKey clientPublicKey = DHUtils.getPublicKeyFromEncodedBytes(action.getPublicKey());
         keyAgreement.doPhase(clientPublicKey, true);
         ByteBuffer secretSymmetricKey = ByteBuffer.wrap(keyAgreement.generateSecret());
-        System.out.println("Server symmetric key : " + secretSymmetricKey.array()[0]);
+        logger.info("Server symmetric key : " + secretSymmetricKey.array()[0]);
     }
 
 
