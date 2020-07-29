@@ -1,20 +1,23 @@
 package actions;
 
-import client.ClientRequest;
 import node.NodeInfo;
+import utils.AESUtils.*;
+
+import java.io.Serializable;
+import java.util.UUID;
+
 
 public class RoutingAction extends Action {
 
-    private ClientRequest _clientRequest;
-    private NodeInfo _nextRouter;
+    private AESEncryptionResult _encryptedNodeData;
 
-    public RoutingAction(ClientRequest clientRequest, NodeInfo nextRouter) {
-        _clientRequest = clientRequest;
-        _nextRouter = nextRouter;
+    public RoutingAction(AESEncryptionResult encryptedNodeData, UUID sessionId) {
+        _encryptedNodeData = encryptedNodeData;
+        _sessionId = sessionId;
     }
 
-    public static RoutingAction of(ClientRequest clientRequest , NodeInfo nextRouter){
-        return new RoutingAction(clientRequest, nextRouter);
+    public static RoutingAction of(AESEncryptionResult encryptedNodeData, UUID sessionId){
+        return new RoutingAction(encryptedNodeData, sessionId);
     }
 
     @Override
@@ -22,19 +25,31 @@ public class RoutingAction extends Action {
         _actionType = ActionType.ROUTING;
     }
 
-    public ClientRequest getClientRequest() {
-        return _clientRequest;
+    public AESEncryptionResult getEncryptedNodeData() {
+        return _encryptedNodeData;
     }
 
-    public void setClientRequest(ClientRequest clientRequest) {
-        _clientRequest = clientRequest;
-    }
 
-    public NodeInfo getNextRouter() {
-        return _nextRouter;
-    }
+    public static class NodeData implements Serializable {
 
-    public void setNextRouter(NodeInfo nextRouter) {
-        _nextRouter = nextRouter;
+        private NodeInfo _nextNode;
+        private Action _nextLayerAction;
+
+        public NodeData(NodeInfo encryptedData, Action nextLayerAction) {
+            _nextNode = encryptedData;
+            _nextLayerAction = nextLayerAction;
+        }
+
+        public static NodeData of(NodeInfo aesEncryptionResult, Action nextLayerAction){
+            return new NodeData(aesEncryptionResult,nextLayerAction);
+        }
+
+        public NodeInfo getNextNode() {
+            return _nextNode;
+        }
+
+        public Action getNextLayerAction() {
+            return _nextLayerAction;
+        }
     }
 }

@@ -1,5 +1,5 @@
 package actions;
 
 public enum ActionType {
-    DH,ROUTING,DIR_REQ;
+    DH,ROUTING,DIR_REQ,SERVICE;
 }

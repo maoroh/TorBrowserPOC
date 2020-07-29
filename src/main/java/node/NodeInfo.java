@@ -3,6 +3,8 @@ package node;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.UUID;
 
 public class NodeInfo implements Serializable {
 
@@ -10,6 +12,7 @@ public class NodeInfo implements Serializable {
     private String _host;
     @SerializedName("port")
     private int _port;
+    private UUID _sessionId;
 
     public NodeInfo(){
 
@@ -37,5 +40,27 @@ public class NodeInfo implements Serializable {
 
     public void setPort(int port) {
         _port = port;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NodeInfo nodeInfo = (NodeInfo) o;
+        return _port == nodeInfo._port &&
+                Objects.equals(_host, nodeInfo._host);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(_host, _port);
+    }
+
+    public UUID getSessionId() {
+        return _sessionId;
+    }
+
+    public void setSessionId(UUID sessionId) {
+        _sessionId = sessionId;
     }
 }

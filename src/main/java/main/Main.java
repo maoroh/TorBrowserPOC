@@ -12,5 +12,6 @@ public class Main {
         dirServer.startListening();
         Client client = new Client();
         client.replaceKeysWithNodes();
+        client.sendAnonymousRequest(null);
     }
 }

@@ -50,12 +50,6 @@ public class Directory extends TCPActionsServer {
     }
 
     public List<NodeInfo> randomizeNodes(int hops){
-
-        List<NodeInfo> nodes = new ArrayList<>();
-        for(int i = 0; i < hops; i++){
-            int hopIndex = new Random().nextInt(_nodes.size());
-            nodes.add(_nodes.get(hopIndex));
-        }
-        return nodes;
+        return _nodes;
     }
 }

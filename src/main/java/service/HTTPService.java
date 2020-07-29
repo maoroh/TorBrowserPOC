@@ -46,7 +46,6 @@ public class HTTPService {
                         .append("</html>");
                 htmlResponse = StringEscapeUtils.escapeHtml4(htmlBuilder.toString());
                 httpExchange.sendResponseHeaders(200, htmlResponse.length());
-
             }
             if(htmlResponse != null){
                 outputStream.write(htmlResponse.getBytes());

@@ -15,14 +15,6 @@
     {
       "host": "localhost",
       "port": 50002
-    },
-    {
-      "host": "localhost",
-      "port": 50003
-    },
-    {
-      "host": "localhost",
-      "port": 50004
     }
   ]
 }

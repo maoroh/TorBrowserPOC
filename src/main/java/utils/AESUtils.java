@@ -2,6 +2,7 @@ package utils;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.Serializable;
 import java.security.AlgorithmParameters;
 import java.util.Base64;
 
@@ -31,7 +32,7 @@ public class AESUtils {
         return recovered;
     }
 
-    public static class AESEncryptionResult {
+    public static class AESEncryptionResult implements Serializable {
 
         private byte[] _cipherText;
         private byte[] _params;
