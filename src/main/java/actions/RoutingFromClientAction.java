@@ -7,22 +7,22 @@ import java.io.Serializable;
 import java.util.UUID;
 
 
-public class RoutingAction extends Action {
+public class RoutingFromClientAction extends Action {
 
     private AESEncryptionResult _encryptedNodeData;
 
-    public RoutingAction(AESEncryptionResult encryptedNodeData, UUID sessionId) {
+    public RoutingFromClientAction(AESEncryptionResult encryptedNodeData, UUID sessionId) {
         _encryptedNodeData = encryptedNodeData;
         _sessionId = sessionId;
     }
 
-    public static RoutingAction of(AESEncryptionResult encryptedNodeData, UUID sessionId){
-        return new RoutingAction(encryptedNodeData, sessionId);
+    public static RoutingFromClientAction of(AESEncryptionResult encryptedNodeData, UUID sessionId){
+        return new RoutingFromClientAction(encryptedNodeData, sessionId);
     }
 
     @Override
     protected void setActionType() {
-        _actionType = ActionType.ROUTING;
+        _actionType = ActionType.ROUTING_FROM_CLIENT;
     }
 
     public AESEncryptionResult getEncryptedNodeData() {
@@ -32,16 +32,18 @@ public class RoutingAction extends Action {
 
     public static class NodeData implements Serializable {
 
+        private NodeInfo _prevNode;
         private NodeInfo _nextNode;
         private Action _nextLayerAction;
 
-        public NodeData(NodeInfo encryptedData, Action nextLayerAction) {
-            _nextNode = encryptedData;
+        public NodeData(NodeInfo prevNode, NodeInfo nextNode, Action nextLayerAction) {
+            _prevNode = prevNode;
+            _nextNode = nextNode;
             _nextLayerAction = nextLayerAction;
         }
 
-        public static NodeData of(NodeInfo aesEncryptionResult, Action nextLayerAction){
-            return new NodeData(aesEncryptionResult,nextLayerAction);
+        public static NodeData of(NodeInfo prevNode, NodeInfo nextNode, Action nextLayerAction){
+            return new NodeData(prevNode,nextNode,nextLayerAction);
         }
 
         public NodeInfo getNextNode() {
@@ -50,6 +52,10 @@ public class RoutingAction extends Action {
 
         public Action getNextLayerAction() {
             return _nextLayerAction;
+        }
+
+        public NodeInfo getPrevNode() {
+            return _prevNode;
         }
     }
 }

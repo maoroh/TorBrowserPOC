@@ -6,9 +6,9 @@ public class DHAction extends Action {
 
     private byte [] _publicKey;
 
-    public DHAction(byte[] publicKey, UUID clientIdentifier) {
+    public DHAction(byte[] publicKey, UUID sessionId) {
         _publicKey = publicKey;
-        _sessionId = clientIdentifier;
+        _sessionId = sessionId;
     }
 
     public static DHAction of(byte [] publicKey, UUID clientIdentifier){
@@ -23,16 +23,9 @@ public class DHAction extends Action {
         return _publicKey;
     }
 
-    public void setPublicKey(byte[] publicKey) {
-        _publicKey = publicKey;
-    }
-
     @Override
     protected void setActionType() {
         _actionType = ActionType.DH;
     }
 
-    public UUID getClientIdentifier() {
-        return _sessionId;
-    }
 }
