@@ -9,9 +9,13 @@ Tor Browser POC Implementation in Java
 
 For building POC of TOR Browser , I implement the Directory server that responsible for loading the nodes as well
 <br/> on different ports.
-<br/> In real life usage , each node listening for requests on a different host and port.
+<br/> In a real life usage , each node listening for requests on a different host and port.
 
-## Execute Server
+##Preview Client
+
+![alt text](preview.png)
+
+## Execute Directory Server
 
 The server must listening before the client is up.
 <br />Use gradle for build executable jar:
