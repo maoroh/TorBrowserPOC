@@ -5,12 +5,12 @@ Tor Browser POC Implementation in Java
 ## Execute Server
 
 The server must listening before the client is up.
-<br />Use gradle for build executable jar.
-
+<br />Use gradle for build executable jar:
 ```gradle
 gradle serverJar
 ```
 
+Run:
 ```java
 java -jar TorBrowser-Server.jar
 ```
@@ -18,12 +18,11 @@ java -jar TorBrowser-Server.jar
 
 ## Execute Client
 
-Use gradle for build executable jar.
-
+Use gradle for build executable jar:
 ```gradle
 gradle clientJar
 ```
-
+Run:
 ```java
 java -jar TorBrowser-Client.jar
 ```
