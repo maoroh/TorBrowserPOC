@@ -5,11 +5,14 @@
 
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextField?>
-<StackPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainViewController">
+<?import javafx.scene.control.Label?>
+<StackPane id="StackPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ui.MainViewController">
 <children>
     <VBox fx:id="vbox">
+        <Label alignment="TOP_RIGHT" text="Union Routing Proof Of Concept (Based on TOR Network protocol)"></Label>
         <TextField fx:id="urlField" onAction="#loadUrl"></TextField>
         <WebView fx:id="webView" layoutX="102.0" layoutY="20.0" prefHeight="559.0" prefWidth="775.0" />
+        <Label alignment="TOP_RIGHT" text="Computer Security Course 2020, Open University"></Label>
     </VBox>
 
 </children>

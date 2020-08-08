@@ -1,25 +1,23 @@
 package client;
 
 import actions.*;
-import common.Configuration;
+import dir.common.Configuration;
 import dir.DirectoryResponse;
-import node.HttpRequest;
-import node.HttpResponse;
-import node.NodeInfo;
-
+import dir.node.HttpRequest;
+import dir.node.HttpResponse;
+import dir.node.NodeInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.AESUtils;
 import utils.AESUtils.AESEncryptionResult;
 import utils.DHUtils;
+import utils.SerializeUtils;
 
 import javax.crypto.KeyAgreement;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.URI;
 import java.nio.ByteBuffer;
 import java.security.KeyPair;
 import java.security.PublicKey;
@@ -50,7 +48,7 @@ public class Client {
         nodeOutputStream.writeObject(dhAction);
         DHAction dhActionRec = (DHAction) nodeInputStream.readObject();
 
-        logger.info("Client : Received Public Key from node ...");
+        logger.info("Client : Received Public Key from dir.node ...");
         PublicKey nodePublicKey = DHUtils.getPublicKeyFromEncodedBytes(dhActionRec.getPublicKey());
         keyAgreement.doPhase(nodePublicKey, true);
         ByteBuffer secretSymmetricKey = ByteBuffer.wrap(keyAgreement.generateSecret());
@@ -80,26 +78,31 @@ public class Client {
     }
 
     public HttpResponse sendAnonymousRequest(HttpRequest req) throws Throwable {
-        replaceKeysWithNodes();
+
         Iterator<NodeInfo> iterator = _nodeKeys.keySet().iterator();
-        List<NodeInfo> nodes = Arrays.asList(iterator.next(), iterator.next(), iterator.next());
+        List<NodeInfo> nodes =  new ArrayList<>();
+        iterator.forEachRemaining(nodes::add);
         Socket nodeSocket = new Socket(nodes.get(0).getHost(), nodes.get(0).getPort());
         ObjectOutputStream nodeOutputStream = new ObjectOutputStream(nodeSocket.getOutputStream());
         ObjectInputStream nodeInputStream = new ObjectInputStream(nodeSocket.getInputStream());
         Action routingAction = createUnionEncryptedClientRequest(req, nodes, 0);
         nodeOutputStream.writeObject(routingAction);
+
         RoutingFromServiceAction routingFromServiceAction = (RoutingFromServiceAction) nodeInputStream.readObject();
         Iterator<ByteBuffer> keysIterator = _nodeKeys.values().iterator();
+
         while (keysIterator.hasNext()) {
             byte[] currentKey = keysIterator.next().array();
-            byte[] decryptedLayer = AESUtils.AESDecrypt(routingFromServiceAction.getEncryptedServerResponse(), currentKey);
+            byte[] decryptedLayer = AESUtils.AESDecrypt(routingFromServiceAction
+                                                        .getEncryptedServerResponse(), currentKey);
             if (keysIterator.hasNext()) {
-                ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptedLayer));
-                routingFromServiceAction = (RoutingFromServiceAction) ((RoutingFromServiceAction.PrevNodeData) objectInputStream.readObject()).getPrevLayer();
+                RoutingFromServiceAction.PrevNodeData prevNodeData = SerializeUtils
+                                                                    .deserializeObject(decryptedLayer);
+                routingFromServiceAction = (RoutingFromServiceAction) prevNodeData.getPrevLayer();
             } else {
                 //Get HTTP
-                ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptedLayer));
-                return (HttpResponse) objectInputStream.readObject();
+                logger.info("Getting data from node...");
+                return SerializeUtils.deserializeObject(decryptedLayer);
             }
         }
 
@@ -128,7 +131,8 @@ public class Client {
         if (i == nodes.size() - 1) {
             return createEncryptedServiceAction(req, _nodeKeys.get(nodes.get(i)), nodes.get(i), nodes.get(i - 1));
         }
-        return createEncryptedRoutingAction(_nodeKeys.get(nodes.get(i)), i != 0 ? nodes.get(i - 1) : null, nodes.get(i), nodes.get(i + 1), createUnionEncryptedClientRequest(req, nodes, i + 1));
+        return createEncryptedRoutingAction(_nodeKeys.get(nodes.get(i)), i != 0 ? nodes.get(i - 1) : null,
+                nodes.get(i), nodes.get(i + 1), createUnionEncryptedClientRequest(req, nodes, i + 1));
     }
 
 }

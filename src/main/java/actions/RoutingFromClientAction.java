@@ -1,6 +1,6 @@
 package actions;
 
-import node.NodeInfo;
+import dir.node.NodeInfo;
 import utils.AESUtils.*;
 
 import java.io.Serializable;
@@ -22,7 +22,7 @@ public class RoutingFromClientAction extends Action {
 
     @Override
     protected void setActionType() {
-        _actionType = ActionType.ROUTING_FROM_CLIENT;
+        _actionType = ActionType.ROUTING;
     }
 
     public AESEncryptionResult getEncryptedNodeData() {

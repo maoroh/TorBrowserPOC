@@ -1,4 +1,4 @@
-package common;
+package dir.common;
 import actions.Action;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,12 +15,12 @@ import java.util.concurrent.Executors;
 public abstract class TCPActionsServer {
 
     private final Logger logger = LogManager.getLogger();
+    private final int THREADS_POOL_SIZE = 10;
     protected ServerSocket _serverSocket;
     protected int _port;
     private Executor executor;
 
     public TCPActionsServer(int port) throws IOException {
-
         _serverSocket = new ServerSocket(port);
         _port = port;
     }
@@ -29,7 +29,7 @@ public abstract class TCPActionsServer {
         init();
         logger.info("Server " + this.getClass().getSimpleName() + " start listening on port " + _port);
         Executors.newSingleThreadExecutor().submit(new TCPListener());
-        executor = Executors.newFixedThreadPool(20);
+        executor = Executors.newFixedThreadPool(THREADS_POOL_SIZE);
     }
 
     protected abstract void init() throws IOException;
@@ -44,12 +44,11 @@ public abstract class TCPActionsServer {
 
                 try {
                     Socket clientSocket = _serverSocket.accept();
-                    logger.info("Client connected to server ...");
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+                    ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
 
                     executor.execute(() -> {
                         try {
-                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
-                            ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
                             Action action = (Action) objectInputStream.readObject();
                             processAction(action, objectOutputStream);
                             objectOutputStream.close();
@@ -67,7 +66,7 @@ public abstract class TCPActionsServer {
         }
     }
 
-    protected abstract void processAction(Action action  , ObjectOutputStream objectOutputStream) throws Throwable;
+    protected abstract void processAction(Action action, ObjectOutputStream objectOutputStream) throws Throwable;
 
 
 }

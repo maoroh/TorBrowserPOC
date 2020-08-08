@@ -1,4 +1,4 @@
-package node;
+package dir.node;
 
 import java.io.Serializable;
 import java.net.URI;

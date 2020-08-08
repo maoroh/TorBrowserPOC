@@ -1,4 +1,4 @@
-package node;
+package dir.node;
 
 import com.google.gson.annotations.SerializedName;
 

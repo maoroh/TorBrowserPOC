@@ -3,10 +3,10 @@ package dir;
 import actions.Action;
 import actions.ActionType;
 import actions.DirRequestAction;
-import common.Configuration;
-import common.TCPActionsServer;
-import node.Node;
-import node.NodeInfo;
+import dir.common.Configuration;
+import dir.common.TCPActionsServer;
+import dir.node.Node;
+import dir.node.NodeInfo;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

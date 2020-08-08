@@ -1,11 +1,10 @@
 package actions;
 
-import node.HttpRequest;
-import node.NodeInfo;
+import dir.node.HttpRequest;
+import dir.node.NodeInfo;
 import utils.AESUtils;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.util.UUID;
 
 public class ServiceRequestAction extends Action {

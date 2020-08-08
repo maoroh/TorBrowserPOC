@@ -20,3 +20,24 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     compile 'org.apache.httpcomponents:httpclient:4.5.12'
 }
+
+task clientJar(type:Jar){
+    manifest{
+        attributes 'Main-Class':'client.Main'
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    archiveName 'UnionRoutingPOC-Client.jar'
+    with jar
+}
+
+
+task serverJar(type:Jar){
+    manifest{
+        attributes 'Main-Class':'dir.DirectoryServer'
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    archiveName 'UnionRoutingPOC-Server.jar'
+    with jar
+}

@@ -1,4 +1,4 @@
-package node;
+package dir.node;
 
 
 import java.io.Serializable;
@@ -7,11 +7,13 @@ import java.util.Collection;
 public class HttpResponse implements Serializable {
 
     private byte [] data;
+    private int status;
     private Collection<Header> headers;
 
-    public HttpResponse(byte [] data, Collection<Header> headers){
+    public HttpResponse(byte [] data, Collection<Header> headers, int status){
         this.data = data;
         this.headers = headers;
+        this.status = status;
     }
 
     public byte[] getData() {
@@ -20,6 +22,10 @@ public class HttpResponse implements Serializable {
 
     public Collection<Header> getHeaders() {
         return headers;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
 

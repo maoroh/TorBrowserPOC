@@ -14,13 +14,13 @@ public class RoutingFromServiceAction extends Action {
         _sessionId = sessionId;
     }
 
-    public static RoutingFromServiceAction of(AESUtils.AESEncryptionResult encryptedServerResponse, UUID sessionId){
+    public static RoutingFromServiceAction of(AESUtils.AESEncryptionResult encryptedServerResponse,UUID sessionId){
         return new RoutingFromServiceAction(encryptedServerResponse, sessionId);
     }
 
     @Override
     protected void setActionType() {
-        _actionType = ActionType.ROUTING_FROM_SERVICE;
+        _actionType = ActionType.ROUTING;
     }
 
     public AESUtils.AESEncryptionResult getEncryptedServerResponse() {

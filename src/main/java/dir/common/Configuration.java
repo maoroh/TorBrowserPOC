@@ -1,10 +1,10 @@
-package common;
+package dir.common;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import node.NodeInfo;
+import dir.node.NodeInfo;
 
 import java.io.InputStreamReader;
 import java.util.List;

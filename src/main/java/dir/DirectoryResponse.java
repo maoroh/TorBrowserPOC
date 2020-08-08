@@ -1,6 +1,6 @@
 package dir;
 
-import node.NodeInfo;
+import dir.node.NodeInfo;
 
 import java.io.Serializable;
 import java.util.List;
