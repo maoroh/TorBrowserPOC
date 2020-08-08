@@ -5,7 +5,7 @@ Tor Browser POC Implementation in Java
 
 #Short Description:
 
-![alt text](tor-network.png)
+![alt text](tor.png)
 
 ## Execute Server
 
