@@ -1,6 +1,6 @@
 # UnionRoutingPOC
 Union Routing POC Implementation in Java
-<br />This project done for Computer Security Course , Open University.
+<br />This Project developed in Computer Security Course , Open University.
 
 ## Execute Server
 
