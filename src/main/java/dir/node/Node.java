@@ -57,6 +57,7 @@ public class Node extends TCPActionsServer {
             RoutingFromClientAction.NodeData nodeData = descryptAES(action.getSessionId(), ((RoutingFromClientAction) action).getEncryptedNodeData());
             updateNodeInfo(action.getSessionId(), nodeData.getPrevNode());
             ObjectInputStream objectInputStream = routeToNextNode(nodeData);
+            //Waiting for response from node
             Action recAction = (Action) objectInputStream.readObject();
 
             //Response recieved from Node
@@ -65,6 +66,7 @@ public class Node extends TCPActionsServer {
             objectInputStream.close();
 
         } else if(action.getActionType().equals(ActionType.SERVICE)) {
+            //Exit Node
             ServiceRequestAction.ServerRequest decryptedServerRequest = descryptAES(action.getSessionId(), ((ServiceRequestAction) action).getEncryptedServerRequest());
             updateNodeInfo(action.getSessionId(), ((ServiceRequestAction) action).getPrevNode());
             RoutingFromServiceAction serviceResponseAction = sendHttpRequest(action.getSessionId(), decryptedServerRequest);

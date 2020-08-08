@@ -18,7 +18,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainView.fxml"));
-        stage.setTitle("HTMLViewer");
+        stage.setTitle("Tor Browser POC");
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
