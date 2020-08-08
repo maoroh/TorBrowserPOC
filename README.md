@@ -11,6 +11,10 @@ The server must listening before the client is up.
 gradle serverJar
 ```
 
+```java
+java -jar TorBrowser-Server.jar
+```
+
 
 ## Execute Client
 
@@ -19,6 +23,11 @@ Use gradle for build executable jar.
 ```gradle
 gradle clientJar
 ```
+
+```java
+java -jar TorBrowser-Client.jar
+```
+
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

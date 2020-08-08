@@ -27,7 +27,7 @@ task clientJar(type:Jar){
     }
 
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    archiveName 'UnionRoutingPOC-Client.jar'
+    archiveName 'TorBrowser-Client.jar'
     with jar
 }
 
@@ -38,6 +38,6 @@ task serverJar(type:Jar){
     }
 
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    archiveName 'UnionRoutingPOC-Server.jar'
+    archiveName 'TorBrowser-Server.jar'
     with jar
 }
